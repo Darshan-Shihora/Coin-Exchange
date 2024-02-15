@@ -1,0 +1,35 @@
+label{
+  padding: 1rem;
+  font-size: larger;
+}
+
+input{
+  padding: .5rem;
+  font-size: larger;
+}
+
+button{
+  margin-left: 1rem;
+  padding: .5rem;
+}
+
+table{
+  /* border: 2px solid black; */
+  font-size: large;
+  margin: 1.5rem;
+}
+
+.no_border{
+  border: 0;
+}
+
+table td,th{
+  border: 1px solid black;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+p{
+  padding: 1rem;
+  font-size: larger;
+}
