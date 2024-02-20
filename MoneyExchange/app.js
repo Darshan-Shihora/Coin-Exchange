@@ -26,7 +26,7 @@ function deepCopy(obj) {
 //   { 500: 1 },
 //   { 200: 3 },
 //   { 100: 1 },
-  // {50 : 1}
+// {50 : 1}
 // ];
 // let newData = deepCopy(data);
 
@@ -45,18 +45,19 @@ function addObject(rupee, number) {
   } else if (addBtn.innerHTML === "Save") {
     data[editId - 1] = obj;
   }
-  
 }
 
-function updateUI(){
+function updateUI() {
   descendingOrder();
   for (let i = 0; i < data.length; i++) {
     let rupee_row = document.getElementById(`rupees_row${i + 1}`);
     let note_row = document.getElementById(`no_of_notes_row${i + 1}`);
-    let rupee = Object.keys(data[i])[0];
-    let note = data[i][rupee];
-    rupee_row.innerHTML = rupee;
-    note_row.innerHTML = note;
+    if (rupee_row && note_row) {
+      let rupee = Object.keys(data[i])[0];
+      let note = data[i][rupee];
+      rupee_row.innerHTML = rupee;
+      note_row.innerHTML = note;
+    }
   }
 }
 
@@ -90,10 +91,10 @@ addBtn.addEventListener("click", (e) => {
     CheckDuplicate();
     if (flag === true) {
       AddNewRow(table_len);
+      updateUI();
     }
     CheckForEditBtn();
     CheckForDelBtn();
-    updateUI();
   }
 });
 
@@ -140,6 +141,7 @@ function CheckForEditBtn() {
       edit.hasEventListener = true;
       edit.addEventListener("click", (e) => {
         let str = e.target.id;
+        console.log(e.target);
         let ID = str[str.length - 1];
         console.log("Editing row with ID: ", ID);
         let rupee_row = document.getElementById(`rupees_row${ID}`);
@@ -158,27 +160,54 @@ function CheckForDelBtn() {
   for (let del of deleteBtn) {
     if (!del.hasEventListener) {
       del.hasEventListener = true;
-      del.addEventListener("click", (e) => {
-        let str = e.target.id;
-        let ID = str[str.length - 1];
-        console.log("Deleting row with ID: ", ID);
-        let rowToDelete = document.getElementById(`row${ID}`);
-        let dataId = 0;
-        for (let i = 0; i < data.length; i++) {
-          if (e.target.value == Object.keys(data[i])) {
-            dataId = i;
-          }
-        }
-        data.splice(dataId, 1);
-        updateUI();
-        if (rowToDelete) {
-          // descendingOrder();
-          rowToDelete.outerHTML = "";
-        } else {
-          console.error("Row not found for deletion.");
-        }
-      });
+      del.addEventListener("click", deleteButtonClickHandler);
+      // del.addEventListener("click", (e) => {
+      //   let str = e.target.id;
+      //   let ID = str[str.length - 1];
+      //   console.log("Deleting row with ID: ", ID);
+      //   let rowToDelete = document.getElementById(`row${ID}`);
+      //   let dataId = 0;
+      //   for (let i = 0; i < data.length; i++) {
+      //     if (e.target.value == Object.keys(data[i])) {
+      //       dataId = i;
+      //     }
+      //   }
+      //   data.splice(dataId, 1);
+      //   del.removeEventListener('click');
+      //   if (rowToDelete) {
+      //     // rowToDelete.outerHTML = "";
+      //     rowToDelete.remove();
+      //     updateUI();
+      //   } else {
+      //     console.error("Row not found for deletion.");
+      //   }
+      // });
     }
+  }
+}
+
+function deleteButtonClickHandler(e) {
+  let str = e.target.id;
+  let ID = str[str.length - 1];
+  console.log("Deleting row with ID: ", ID);
+  let rowToDelete = document.getElementById(`row${ID}`);
+  console.log(e.target);
+  // let dataId = 0;
+  // console.log(e.target);
+  // for (let i = 0; i < data.length; i++) {
+  //   if (e.target.value == Object.keys(data[i])) {
+  //     dataId = i;
+  //   }
+  // }
+
+  // e.target.removeEventListener('click', deleteButtonClickHandler);
+
+  if (rowToDelete) {
+    rowToDelete.remove();
+    data.splice(ID-1, 1);
+    updateUI();
+  } else {
+    console.error("Row not found for deletion.");
   }
 }
 
@@ -194,7 +223,8 @@ console.log(data);
 
 changeBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  descendingOrder();
+  // descendingOrder();
+  updateUI();
   let newData = deepCopy(data);
   // let Value = e.target.value;
   let diff = +priceToShopkeeper.value - +productPrice.value;
@@ -230,32 +260,31 @@ changeBtn.addEventListener("click", (e) => {
       if (diff == 0) {
         break;
       }
-      if(diff !== 0 && i == newData.length - 1){
+      if (diff !== 0 && i == newData.length - 1) {
         newData = deepCopy(data);
         alert("Change is not available");
       }
     }
-
-    for(let i = 0; i < newData.length - 1; i++){
+    console.log(newData.length);
+    for (let i = 0; i < newData.length; i++) {
       let note_row = document.getElementById(`no_of_notes_row${i + 1}`);
-      if(note_row){
-        console.log(note_row.innerHTML,Object.values(newData[i])[0]);
+      if (note_row) {
+        console.log(note_row.innerHTML, Object.values(newData[i])[0]);
         note_row.innerHTML = Object.values(newData[i])[0];
       }
     }
-
 
     for (let j = 0; j < newData.length; j++) {
       if (Object.values(newData[j])[0] == 0) {
         // console.log(newData[i]);
         newData.splice(j, 1);
         let row = document.getElementById(`row${j + 1}`);
-        row.innerHTML = '';
+        row.innerHTML = "";
         j--;
       }
     }
 
     data = deepCopy(newData);
-    console.table(newData)
+    console.log(newData);
   }
 });
