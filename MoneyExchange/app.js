@@ -47,18 +47,18 @@ function addObject(rupee, number) {
   }
 }
 
-function updateUI() {
+function updateUI(toggleData) {
   descendingOrder();
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < toggleData.length; i++) {
     let row = document.getElementById(`row${i + 1}`);
     let rupee_row = document.getElementById(`rupees_row${i + 1}`);
     let note_row = document.getElementById(`no_of_notes_row${i + 1}`);
     let edit_row = document.getElementById(`edit_button${i + 1}`);
     let delete_row = document.getElementById(`delete_button${i + 1}`);
-    console.log(edit_row, delete_row);
+    // console.log(edit_row, delete_row);
     if (rupee_row && note_row) {
-      let rupee = Object.keys(data[i])[0];
-      let note = data[i][rupee];
+      let rupee = Object.keys(toggleData[i])[0];
+      let note = toggleData[i][rupee];
       rupee_row.innerHTML = rupee;
       note_row.innerHTML = note;
       edit_row.value = rupee;
@@ -89,7 +89,7 @@ addBtn.addEventListener("click", (e) => {
     // CheckDuplicate();
     // if(flag === true){
     addObject(Rupee.value, Note.value);
-    updateUI();
+    updateUI(data);
     rupee_row.innerHTML = Rupee.value;
     note_row.innerHTML = Note.value;
     // descendingOrder();
@@ -109,7 +109,7 @@ addBtn.addEventListener("click", (e) => {
     CheckDuplicate();
     if (flag === true) {
       AddNewRow(table_len);
-      updateUI();
+      updateUI(data);
     }
     CheckForEditBtn();
     CheckForDelBtn();
@@ -189,7 +189,7 @@ function deleteButtonClickHandler(e) {
   if (rowToDelete) {
     rowToDelete.remove();
     data.splice(ID - 1, 1);
-    updateUI();
+    updateUI(data);
   } else {
     console.error("Row not found for deletion.");
   }
@@ -207,8 +207,7 @@ console.log(data);
 
 changeBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  // descendingOrder();
-  updateUI();
+  // updateUI();
   let newData = deepCopy(data);
   // let Value = e.target.value;
   let diff = +priceToShopkeeper.value - +productPrice.value;
@@ -251,8 +250,10 @@ changeBtn.addEventListener("click", (e) => {
       }
     }
     console.log(newData.length);
+    console.log(newData);
     for (let i = 0; i < newData.length; i++) {
       let note_row = document.getElementById(`no_of_notes_row${i + 1}`);
+      // console.log(note_row);
       if (note_row) {
         console.log(note_row.innerHTML, Object.values(newData[i])[0]);
         note_row.innerHTML = Object.values(newData[i])[0];
@@ -264,7 +265,8 @@ changeBtn.addEventListener("click", (e) => {
         // console.log(newData[i]);
         newData.splice(j, 1);
         let row = document.getElementById(`row${j + 1}`);
-        row.innerHTML = "";
+        row.remove();
+        updateUI(newData);
         j--;
       }
     }
