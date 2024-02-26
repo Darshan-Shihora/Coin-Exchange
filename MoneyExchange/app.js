@@ -50,13 +50,31 @@ function addObject(rupee, number) {
 function updateUI() {
   descendingOrder();
   for (let i = 0; i < data.length; i++) {
+    let row = document.getElementById(`row${i + 1}`);
     let rupee_row = document.getElementById(`rupees_row${i + 1}`);
     let note_row = document.getElementById(`no_of_notes_row${i + 1}`);
+    let edit_row = document.getElementById(`edit_button${i + 1}`);
+    let delete_row = document.getElementById(`delete_button${i + 1}`);
+    console.log(edit_row, delete_row);
     if (rupee_row && note_row) {
       let rupee = Object.keys(data[i])[0];
       let note = data[i][rupee];
       rupee_row.innerHTML = rupee;
       note_row.innerHTML = note;
+      edit_row.value = rupee;
+      delete_row.value = rupee;
+    } else {
+      let updatedRow = document.getElementById(`row${i + 2}`);
+      let updatedRupeeRow = document.getElementById(`rupees_row${i + 2}`);
+      let updatedNoteRow = document.getElementById(`no_of_notes_row${i + 2}`);
+      let updatedEditRow = document.getElementById(`edit_button${i + 2}`);
+      let updatedDeleteRow = document.getElementById(`delete_button${i + 2}`);
+      updatedRow.id = `row${i + 1}`;
+      updatedRupeeRow.id = `rupees_row${i + 1}`;
+      updatedNoteRow.id = `no_of_notes_row${i + 1}`;
+      updatedEditRow.id = `edit_button${i + 1}`;
+      updatedDeleteRow.id = `delete_button${i + 1}`;
+      i--;
     }
   }
 }
@@ -125,9 +143,6 @@ function AddNewRow(table_len) {
     </td>`;
   tBody.appendChild(row);
   addObject(Rupee.value, Note.value);
-  // const newData = data.map((val) => {
-  //   return val;
-  // });
   console.log(data);
   // descendingOrder();
   Rupee.value = "";
@@ -161,27 +176,6 @@ function CheckForDelBtn() {
     if (!del.hasEventListener) {
       del.hasEventListener = true;
       del.addEventListener("click", deleteButtonClickHandler);
-      // del.addEventListener("click", (e) => {
-      //   let str = e.target.id;
-      //   let ID = str[str.length - 1];
-      //   console.log("Deleting row with ID: ", ID);
-      //   let rowToDelete = document.getElementById(`row${ID}`);
-      //   let dataId = 0;
-      //   for (let i = 0; i < data.length; i++) {
-      //     if (e.target.value == Object.keys(data[i])) {
-      //       dataId = i;
-      //     }
-      //   }
-      //   data.splice(dataId, 1);
-      //   del.removeEventListener('click');
-      //   if (rowToDelete) {
-      //     // rowToDelete.outerHTML = "";
-      //     rowToDelete.remove();
-      //     updateUI();
-      //   } else {
-      //     console.error("Row not found for deletion.");
-      //   }
-      // });
     }
   }
 }
@@ -191,20 +185,10 @@ function deleteButtonClickHandler(e) {
   let ID = str[str.length - 1];
   console.log("Deleting row with ID: ", ID);
   let rowToDelete = document.getElementById(`row${ID}`);
-  console.log(e.target);
-  // let dataId = 0;
-  // console.log(e.target);
-  // for (let i = 0; i < data.length; i++) {
-  //   if (e.target.value == Object.keys(data[i])) {
-  //     dataId = i;
-  //   }
-  // }
-
-  // e.target.removeEventListener('click', deleteButtonClickHandler);
-
+  console.log(rowToDelete);
   if (rowToDelete) {
     rowToDelete.remove();
-    data.splice(ID-1, 1);
+    data.splice(ID - 1, 1);
     updateUI();
   } else {
     console.error("Row not found for deletion.");
@@ -249,6 +233,7 @@ changeBtn.addEventListener("click", (e) => {
           }
           if (diff !== 0 && j == newData.length - 1) {
             diff = actualDiff;
+
             // console.log(diff);
             newData = deepCopy(data);
             // console.log(newData);
