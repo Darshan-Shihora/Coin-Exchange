@@ -50,7 +50,6 @@ function addObject(rupee, number) {
 function updateUI(toggleData) {
   descendingOrder();
   for (let i = 0; i < toggleData.length; i++) {
-    let row = document.getElementById(`row${i + 1}`);
     let rupee_row = document.getElementById(`rupees_row${i + 1}`);
     let note_row = document.getElementById(`no_of_notes_row${i + 1}`);
     let edit_row = document.getElementById(`edit_button${i + 1}`);
@@ -86,14 +85,10 @@ addBtn.addEventListener("click", (e) => {
     console.log("Saving data in ID :", editId);
     let rupee_row = document.getElementById(`rupees_row${editId}`);
     let note_row = document.getElementById(`no_of_notes_row${editId}`);
-    // CheckDuplicate();
-    // if(flag === true){
     addObject(Rupee.value, Note.value);
     updateUI(data);
     rupee_row.innerHTML = Rupee.value;
     note_row.innerHTML = Note.value;
-    // descendingOrder();
-    // }
 
     addBtn.innerHTML = "Add";
     Rupee.value = "";
@@ -144,7 +139,6 @@ function AddNewRow(table_len) {
   tBody.appendChild(row);
   addObject(Rupee.value, Note.value);
   console.log(data);
-  // descendingOrder();
   Rupee.value = "";
   Note.value = "";
 }
@@ -201,20 +195,25 @@ function descendingOrder() {
     let keyB = Object.keys(b)[0];
     return keyB - keyA;
   });
-  // console.log(data);
 }
 console.log(data);
 
 changeBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  // updateUI();
+  let ul = document.getElementById("show_note_given");
+  if (ul) {
+    ul.innerHTML = "";
+  }
   let newData = deepCopy(data);
-  // let Value = e.target.value;
   let diff = +priceToShopkeeper.value - +productPrice.value;
   if (diff < 0) {
     alert("You need to give more " + -diff + " rupee");
   } else {
     // console.log(diff);
+    if (newData.length == 0) {
+      alert("Money not available");
+      return;
+    }
     showChange.innerHTML = `Shopkepper need to give ${diff}₹ to you`;
     let actualDiff = diff;
 
@@ -223,19 +222,12 @@ changeBtn.addEventListener("click", (e) => {
         if (Object.values(newData[j])[0] > 0) {
           if (diff >= +Object.keys(newData[j])[0]) {
             diff -= +Object.keys(newData[j])[0];
-
-            // let note_row = document.getElementById(`no_of_notes_row${j + 1}`);
-            // note_row.innerHTML--;
-
             newData[j][Object.keys(newData[j])]--;
             j--;
           }
           if (diff !== 0 && j == newData.length - 1) {
             diff = actualDiff;
-
-            // console.log(diff);
             newData = deepCopy(data);
-            // console.log(newData);
           }
         } else {
           continue;
@@ -249,20 +241,25 @@ changeBtn.addEventListener("click", (e) => {
         alert("Change is not available");
       }
     }
-    console.log(newData.length);
-    console.log(newData);
+
     for (let i = 0; i < newData.length; i++) {
       let note_row = document.getElementById(`no_of_notes_row${i + 1}`);
+      let rupee_row = document.getElementById(`rupees_row${i + 1}`);
       // console.log(note_row);
       if (note_row) {
         console.log(note_row.innerHTML, Object.values(newData[i])[0]);
+        let diff = +note_row.innerHTML - Object.values(newData[i])[0];
         note_row.innerHTML = Object.values(newData[i])[0];
+        let li = document.createElement("li");
+        li.style = "list-style: none;";
+        console.log(diff);
+        li.innerHTML = `${diff} x ${rupee_row.innerHTML}`;
+        ul.appendChild(li);
       }
     }
 
     for (let j = 0; j < newData.length; j++) {
       if (Object.values(newData[j])[0] == 0) {
-        // console.log(newData[i]);
         newData.splice(j, 1);
         let row = document.getElementById(`row${j + 1}`);
         row.remove();

@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Money Exchange</title>
-  <link rel="stylesheet" href="app.css">
-  <!-- <script src="script.js" defer></script> -->
-  <script src="app.js" defer></script>
-</head>
-<body>
-  <form action="">
-    <label for="rupee">Rupee : </label>
-    <input type="number" id="rupee">
-    <label for="note">No. of Notes : </label>
-    <input type="number" id="note">
-    <button id="add" value="Add">Add</button>
-  </form>
-  <table id="table">
-    <tbody id="tBody">
-    <tr>
-      <th>Rupees</th>
-      <th>No. of Notes</th>
-    </tr>
-    <!-- <tr id="row1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Money Exchange</title>
+    <link rel="stylesheet" href="app.css" />
+    <!-- <script src="script.js" defer></script> -->
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <form action="">
+      <label for="rupee">Rupee : </label>
+      <input type="number" id="rupee" />
+      <label for="note">No. of Notes : </label>
+      <input type="number" id="note" />
+      <button id="add" value="Add">Add</button>
+    </form>
+    <table id="table">
+      <tbody id="tBody">
+        <tr>
+          <th>Rupees</th>
+          <th>No. of Notes</th>
+        </tr>
+        <!-- <tr id="row1">
       <td id="rupees_row1">1000</td>
       <td id="no_of_notes_row1">2</td>
       <td class="no_border">
@@ -38,15 +38,16 @@
         <button id="delete_button2" class="delete" value="500">Delete</button>
       </td>
     </tr> -->
-  </tbody>
-  </table>
-  <form action="">
-    <label for="product_price">Total Price of Product : </label>
-    <input type="text" id="product_price">
-    <label for="price_to_shopkeeper">Amount given to shopkeeper : </label>
-    <input type="text" id="price_to_shopkeeper">
-    <button id="change" value="0">Return Change</button>
-  </form>
-  <p id="show"></p>
-</body>
+      </tbody>
+    </table>
+    <form action="">
+      <label for="product_price">Total Price of Product : </label>
+      <input type="text" id="product_price" />
+      <label for="price_to_shopkeeper">Amount given to shopkeeper : </label>
+      <input type="text" id="price_to_shopkeeper" />
+      <button id="change" value="0">Return Change</button>
+    </form>
+    <p id="show"></p>
+    <ul id="show_note_given"></ul>
+  </body>
 </html>
